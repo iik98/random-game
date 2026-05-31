@@ -1,0 +1,934 @@
+/* ==========================================================================
+   Cosmic Fusion Mobile CSS - Premium Design System
+   ========================================================================== */
+
+:root {
+    --bg-color: #050614;
+    --panel-bg: rgba(13, 17, 43, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-glow: rgba(99, 102, 241, 0.15);
+    
+    /* Neon Accent Colors */
+    --accent-purple: #8b5cf6;
+    --accent-magenta: #ec4899;
+    --accent-cyan: #06b6d4;
+    --accent-gold: #eab308;
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    
+    /* Font Family */
+    --font-main: 'Outfit', sans-serif;
+}
+
+/* Base Reset & Mobile Lock */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: var(--bg-color);
+    font-family: var(--font-main);
+    color: var(--text-primary);
+    touch-action: none; /* Disable native scroll and gestures */
+}
+
+/* App Container (Full-screen Lock with Safe Areas) */
+.app-container {
+    width: 100vw;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: env(safe-area-inset-top, 16px) 16px env(safe-area-inset-bottom, 16px) 16px;
+    z-index: 10;
+}
+
+/* Starry Sky Procedural Background */
+.stars-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(1px 1px at 25px 35px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 60px 120px, rgba(255,255,255,0.5), rgba(0,0,0,0)),
+        radial-gradient(1.5px 1.5px at 120px 50px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 200px 180px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1.5px 1.5px at 280px 240px, rgba(255,255,255,0.7), rgba(0,0,0,0));
+    background-size: 320px 320px;
+    opacity: 0.4;
+    z-index: -2;
+    animation: starsMoving 180s linear infinite;
+}
+
+.glow-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150vw;
+    height: 150vw;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, rgba(236, 72, 153, 0.04) 40%, rgba(5, 6, 20, 0) 70%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+@keyframes starsMoving {
+    from { background-position: 0 0; }
+    to { background-position: 320px 640px; }
+}
+
+/* ==========================================================================
+   HUD Layout (Header Area)
+   ========================================================================== */
+.hud {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    z-index: 10;
+}
+
+.hud-panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 8px 16px;
+    border-radius: 16px;
+    min-width: 80px;
+    text-align: center;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 0 12px var(--glass-glow);
+    display: flex;
+    flex-direction: column;
+}
+
+.hud-panel .label {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: var(--text-secondary);
+    letter-spacing: 0.15em;
+    margin-bottom: 2px;
+}
+
+.hud-panel .value {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ffffff;
+    font-variant-numeric: tabular-nums;
+}
+
+.score-panel {
+    border-color: rgba(236, 72, 153, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 0 8px rgba(236, 72, 153, 0.1);
+}
+
+.score-panel .value {
+    color: var(--accent-magenta);
+    text-shadow: 0 0 10px rgba(236, 72, 153, 0.4);
+}
+
+.best-panel {
+    border-color: rgba(6, 182, 212, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 0 8px rgba(6, 182, 212, 0.1);
+}
+
+.best-panel .value {
+    color: var(--accent-cyan);
+    text-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+}
+
+.title-logo {
+    text-align: center;
+}
+
+.title-logo h1 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    background: linear-gradient(135deg, #ffffff 40%, var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.1;
+}
+
+.title-logo .sub-title {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: var(--accent-magenta);
+    letter-spacing: 0.4em;
+    margin-left: 0.4em;
+    text-shadow: 0 0 8px rgba(236, 72, 153, 0.4);
+}
+
+/* ==========================================================================
+   Main Game Container & Canvas
+   ========================================================================== */
+.game-container {
+    flex: 1;
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin: 8px 0;
+}
+
+/* Next Planet Preview Panel */
+.next-preview-panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), inset 0 0 8px var(--glass-glow);
+}
+
+/* Next Block Preview Panel for Neon Cascade */
+.cascade-next-panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), inset 0 0 8px rgba(6, 182, 212, 0.15);
+}
+
+.next-label {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--text-secondary);
+    letter-spacing: 0.15em;
+}
+
+.next-circle-wrapper {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 50%;
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+.planet-preview {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive Canvas Wrapper - Constrained by height bottleneck */
+.canvas-wrapper {
+    width: 100%;
+    max-width: calc((100dvh - 225px) * 9 / 14); /* Restricts width dynamically so bottom never overflows on shorter screens */
+    flex: 1;
+    aspect-ratio: 9 / 14; /* Standard Portrait Container Ratio */
+    background: rgba(13, 17, 43, 0.4);
+    border: 1.5px solid var(--glass-border);
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.5), 
+        inset 0 0 30px rgba(0, 0, 0, 0.6), 
+        inset 0 0 20px var(--glass-glow);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-canvas, #cascade-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* ==========================================================================
+   Overlay Panels (Splash Screen & Game Over)
+   ========================================================================== */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.overlay-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 32px 24px;
+    border-radius: 28px;
+    text-align: center;
+    transform: scale(0.9);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.overlay.active .overlay-card {
+    transform: scale(1);
+}
+
+/* Premium Frosted Glass Effect */
+.glass {
+    background: rgba(10, 12, 36, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 24px 60px rgba(0, 0, 0, 0.65), 
+        inset 0 0 25px rgba(255, 255, 255, 0.05),
+        inset 0 0 30px rgba(139, 92, 246, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+/* Splash Specifics */
+.cosmic-logo-large {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.cosmic-logo-large .glow-text {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
+    line-height: 1;
+}
+
+.cosmic-logo-large .accent-text {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: 0.4em;
+    color: var(--accent-magenta);
+    text-shadow: 0 0 15px rgba(236, 72, 153, 0.6);
+    margin-left: 0.4em;
+    margin-top: 4px;
+}
+
+.overlay-card .description {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    padding: 0 8px;
+}
+
+.overlay-card strong {
+    color: #ffffff;
+}
+
+/* Evolution Guide Row */
+.evolution-guide {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 28px;
+}
+
+.evolution-title {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: var(--text-secondary);
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+}
+
+.evolution-line {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.evo-orb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 0 0 6px rgba(255,255,255,0.2);
+}
+
+.evo-arrow {
+    font-size: 0.55rem;
+    color: rgba(255, 255, 255, 0.25);
+}
+
+/* Buttons System */
+.btn-primary {
+    width: 100%;
+    max-width: 280px;
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-family: var(--font-main);
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    padding: 16px 32px;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 
+        0 10px 25px rgba(236, 72, 153, 0.35),
+        0 0 15px rgba(139, 92, 246, 0.2),
+        inset 0 -4px 0 rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.btn-primary:active {
+    transform: scale(0.95);
+    box-shadow: 
+        0 5px 12px rgba(236, 72, 153, 0.2),
+        inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.tap-hint {
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.25);
+    margin-top: 14px;
+    letter-spacing: 0.05em;
+}
+
+/* Game Over Screen UI */
+.game-over-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--accent-magenta);
+    text-shadow: 0 0 20px rgba(236, 72, 153, 0.5);
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+}
+
+.game-over-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+.result-stats {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+.result-row strong {
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+.score-highlight {
+    color: var(--accent-magenta);
+    text-shadow: 0 0 10px rgba(236, 72, 153, 0.4);
+}
+
+.best-highlight {
+    color: var(--accent-cyan);
+    text-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+}
+
+/* Float Floating Micro-Animation */
+.animate-float {
+    animation: floatAnim 4s ease-in-out infinite;
+}
+
+@keyframes floatAnim {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Responsive Scaling for smaller screens */
+@media (max-height: 600px) {
+    .app-container {
+        padding: 8px;
+    }
+    .hud {
+        margin-bottom: 4px;
+    }
+    .hud-panel {
+        padding: 4px 10px;
+    }
+    .hud-panel .value {
+        font-size: 1.1rem;
+    }
+    .title-logo h1 {
+        font-size: 1.1rem;
+    }
+    .next-preview-panel, .cascade-next-panel {
+        margin-bottom: 6px;
+        padding: 4px 10px;
+    }
+    .canvas-wrapper {
+        border-radius: 16px;
+    }
+    .overlay-card {
+        padding: 20px 16px;
+    }
+    .cosmic-logo-large .glow-text {
+        font-size: 1.8rem;
+    }
+    .cosmic-logo-large .accent-text {
+        font-size: 1rem;
+    }
+    .evolution-guide {
+        margin-bottom: 16px;
+    }
+    .btn-primary {
+        padding: 12px 24px;
+    }
+}
+
+/* ==========================================================================
+   Timer / Time Attack Bar Styles
+   ========================================================================== */
+.timer-container {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 4px 0 10px 0;
+    padding: 6px 14px;
+    background: var(--panel-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), inset 0 0 8px var(--glass-glow);
+    z-index: 10;
+}
+
+.timer-icon {
+    font-size: 0.95rem;
+}
+
+.timer-bar-bg {
+    flex: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.timer-bar-fill {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+    border-radius: 4px;
+    transition: width 0.1s linear, background 0.3s ease;
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+}
+
+.timer-bar-fill.warning {
+    background: linear-gradient(90deg, #ef4444, #f43f5e);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+}
+
+.timer-value {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #ffffff;
+    min-width: 36px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Full Screen Pulse warning Vignette (Dangerous height alert)
+   ========================================================================== */
+.warning-flash {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    pointer-events: none;
+    box-shadow: inset 0 0 40px rgba(239, 68, 68, 0);
+    transition: all 0.3s ease;
+    z-index: 5;
+    background-color: rgba(239, 68, 68, 0);
+}
+
+.warning-flash.active {
+    animation: warningOverlayPulse 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes warningOverlayPulse {
+    0% {
+        box-shadow: inset 0 0 25px rgba(239, 68, 68, 0.15);
+        background-color: rgba(239, 68, 68, 0.01);
+    }
+    100% {
+        box-shadow: inset 0 0 65px rgba(239, 68, 68, 0.42);
+        background-color: rgba(239, 68, 68, 0.08);
+    }
+}
+
+/* ==========================================================================
+   Game Hub Lobby Layout
+   ========================================================================== */
+.lobby-container {
+    width: 100%;
+    max-width: 480px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0 8px 0;
+    z-index: 10;
+    overflow-y: auto;
+}
+
+.lobby-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.lobby-subtitle {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 0.08em;
+    margin-top: 6px;
+}
+
+.game-cards-grid {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+    justify-content: center;
+    padding: 8px 4px;
+}
+
+.game-card {
+    position: relative;
+    width: 100%;
+    padding: 24px;
+    border-radius: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+    border-color: rgba(255, 255, 255, 0.06);
+}
+
+.game-card:hover, .game-card:active {
+    transform: translateY(-4px) scale(1.02);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.4), 
+        inset 0 0 15px rgba(255, 255, 255, 0.05),
+        inset 0 0 20px var(--glass-glow);
+}
+
+.card-glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.18) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.card-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+    z-index: 1;
+}
+
+.card-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    z-index: 1;
+}
+
+.card-desc {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    text-align: left;
+    z-index: 1;
+}
+
+.card-score-badge {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 4px 12px;
+    border-radius: 50px;
+    border: 1px solid rgba(255,255,255,0.05);
+    z-index: 1;
+}
+
+.card-score-badge strong {
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.btn-card-play {
+    align-self: stretch;
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
+    border: none;
+    outline: none;
+    padding: 14px;
+    border-radius: 50px;
+    color: #ffffff;
+    font-family: var(--font-main);
+    font-weight: 800;
+    font-size: 0.88rem;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    box-shadow: 
+        0 8px 20px rgba(236, 72, 153, 0.25),
+        inset 0 -3px 0 rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+    z-index: 1;
+    text-align: center;
+}
+
+.btn-card-play:active {
+    transform: scale(0.96);
+    box-shadow: 0 4px 10px rgba(236, 72, 153, 0.15);
+}
+
+.lobby-footer {
+    text-align: center;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.15);
+    margin-top: 16px;
+    letter-spacing: 0.1em;
+}
+
+/* ==========================================================================
+   Arena Navigation
+   ========================================================================== */
+.game-arena {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    animation: arenaFadeIn 0.4s ease;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@keyframes arenaFadeIn {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Header Home/Lobby Button */
+.hud-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    background: var(--panel-bg);
+    color: #ffffff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2), inset 0 0 6px var(--glass-glow);
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.hud-btn:active {
+    transform: scale(0.9);
+    background: rgba(255,255,255,0.08);
+}
+
+/* ==========================================================================
+   Neon Cascade Status HUD
+   ========================================================================== */
+.cascade-status-container {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 6px;
+    z-index: 10;
+}
+
+.status-panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 6px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--text-secondary);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15), inset 0 0 6px var(--glass-glow);
+}
+
+.status-value {
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Mobile D-pad Console Controls
+   ========================================================================== */
+.mobile-controls {
+    width: 100%;
+    max-width: 360px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+    z-index: 10;
+}
+
+.ctrl-btn {
+    background: var(--panel-bg);
+    border: 1.5px solid var(--glass-border);
+    border-radius: 18px;
+    padding: 14px;
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 800;
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2), inset 0 0 8px var(--glass-glow);
+    transition: all 0.1s ease;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.ctrl-btn:active {
+    transform: scale(0.92);
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+    background: rgba(6, 182, 212, 0.05);
+}
+
+.rotate-btn {
+    grid-column: 2;
+}
+
+.drop-btn {
+    grid-column: 2;
+}
+
+/* Smaller mobile view adjustments */
+@media (max-height: 600px) {
+    .lobby-container {
+        padding: 8px 0;
+    }
+    .lobby-header {
+        margin-bottom: 12px;
+    }
+    .game-cards-grid {
+        gap: 12px;
+    }
+    .game-card {
+        padding: 16px;
+        border-radius: 20px;
+        gap: 8px;
+    }
+    .btn-card-play {
+        padding: 10px;
+    }
+    .mobile-controls {
+        gap: 8px;
+        margin-top: 6px;
+    }
+    .ctrl-btn {
+        padding: 8px;
+        border-radius: 12px;
+    }
+}
+
+/* Custom height constraint for Neon Cascade to ensure the D-pad navigation fits on all screens (desktop and mobile) */
+#neon-cascade-arena .canvas-wrapper {
+    max-width: calc((100dvh - 350px) * 9 / 14);
+}
+
+
+

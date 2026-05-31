@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Cosmic Game Hub</title>
+    <!-- Web App Capabilities for iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Cosmic Game Hub">
+    
+    <!-- Google Fonts for Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS File -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- background starry effect inside canvas or CSS -->
+        <div class="stars-bg"></div>
+        <div class="glow-bg"></div>
+        <div id="warning-flash" class="warning-flash"></div>
+
+        <!-- ==========================================================================
+           1. COSMIC GAME HUB LOBBY
+           ========================================================================== -->
+        <div id="lobby-container" class="lobby-container">
+            <header class="lobby-header">
+                <div class="cosmic-logo-large animate-float">
+                    <span class="glow-text">COSMIC</span>
+                    <span class="accent-text">GAME HUB</span>
+                </div>
+                <p class="lobby-subtitle">Pilih petualangan arcade kosmik premium Anda!</p>
+            </header>
+
+            <div class="game-cards-grid">
+                <!-- Card 1: Cosmic Fusion -->
+                <div class="game-card glass" id="card-cosmic-fusion">
+                    <div class="card-glow"></div>
+                    <div class="card-icon fusion-icon">🪐</div>
+                    <h3 class="card-title">Cosmic Fusion</h3>
+                    <p class="card-desc">Gabungkan planet sejenis untuk menciptakan Matahari raksasa dalam mode bertahap waktu!</p>
+                    <div class="card-score-badge">
+                        <span>BEST:</span>
+                        <strong id="lobby-best-cosmic">0</strong>
+                    </div>
+                    <button class="btn-card-play" data-game="cosmic">PLAY GAME</button>
+                </div>
+
+                <!-- Card 2: Neon Brick Cascade -->
+                <div class="game-card glass" id="card-neon-cascade">
+                    <div class="card-glow" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, transparent 60%);"></div>
+                    <div class="card-icon cascade-icon">🧱</div>
+                    <h3 class="card-title">Neon Cascade</h3>
+                    <p class="card-desc">Susun balok neon bercahaya dan rasakan sensasi runtuhan Cascade Physics!</p>
+                    <div class="card-score-badge">
+                        <span>BEST:</span>
+                        <strong id="lobby-best-cascade">0</strong>
+                    </div>
+                    <button class="btn-card-play" data-game="cascade">PLAY GAME</button>
+                </div>
+            </div>
+            
+            <footer class="lobby-footer">
+                <p>Designed by Antigravity AI Engine &copy; 2026</p>
+            </footer>
+        </div>
+
+        <!-- ==========================================================================
+           2. COSMIC FUSION ARENA
+           ========================================================================== -->
+        <div id="cosmic-fusion-arena" class="game-arena hidden">
+            <!-- HUD (Heads Up Display) -->
+            <header class="hud">
+                <button id="cosmic-back-btn" class="hud-btn" title="Kembali ke Menu Utama">🏡</button>
+                <div class="hud-panel score-panel">
+                    <span class="label">SCORE</span>
+                    <span id="score-val" class="value">0</span>
+                </div>
+                <div class="hud-panel best-panel">
+                    <span class="label">BEST</span>
+                    <span id="best-val" class="value">0</span>
+                </div>
+            </header>
+
+            <!-- Time Attack Survival Timer -->
+            <div class="timer-container">
+                <span class="timer-icon">⏳</span>
+                <div class="timer-bar-bg">
+                    <div id="timer-bar-fill" class="timer-bar-fill"></div>
+                </div>
+                <span id="timer-val" class="timer-value">60s</span>
+            </div>
+
+            <!-- Dynamic Game Container -->
+            <main class="game-container">
+                <!-- Next Planet Preview Panel -->
+                <div class="next-preview-panel">
+                    <span class="next-label">NEXT</span>
+                    <div class="next-circle-wrapper">
+                        <div id="next-planet-preview" class="planet-preview"></div>
+                    </div>
+                </div>
+
+                <!-- Canvas Wrapper -->
+                <div class="canvas-wrapper">
+                    <canvas id="game-canvas"></canvas>
+                </div>
+            </main>
+
+            <!-- Splash Screen / Touch to Start -->
+            <div id="splash-screen" class="overlay active">
+                <div class="overlay-card glass">
+                    <div class="cosmic-logo-large animate-float">
+                        <span class="glow-text">COSMIC</span>
+                        <span class="accent-text">FUSION</span>
+                    </div>
+                    <p class="description">Gabungkan planet-planet kosmik untuk menciptakan <strong>Matahari Raksasa</strong>! Jangan biarkan planet meluap dan pantau waktu kelangsungan hidup Anda!</p>
+                    <div class="evolution-guide">
+                        <div class="evolution-title">EVOLUSI PLANET:</div>
+                        <div class="evolution-line" id="evolution-line">
+                            <!-- Populated in JS -->
+                        </div>
+                    </div>
+                    <button id="start-btn" class="btn-primary">MULAI BERMAIN</button>
+                    <p class="tap-hint">*Suara dan getaran akan diaktifkan secara otomatis</p>
+                </div>
+            </div>
+
+            <!-- Game Over Screen -->
+            <div id="game-over-screen" class="overlay">
+                <div class="overlay-card glass">
+                    <h2 class="game-over-title">GAME OVER</h2>
+                    <p id="game-over-subtitle" class="game-over-subtitle">Bola kosmik telah meluap!</p>
+                    
+                    <div class="result-stats">
+                        <div class="result-row">
+                            <span>Skor Akhir:</span>
+                            <strong id="final-score" class="score-highlight">0</strong>
+                        </div>
+                        <div class="result-row">
+                            <span>Skor Tertinggi:</span>
+                            <strong id="final-best" class="best-highlight">0</strong>
+                        </div>
+                    </div>
+                    
+                    <button id="restart-btn" class="btn-primary">MAIN LAGI</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================================
+           3. NEON BRICK CASCADE ARENA
+           ========================================================================== -->
+        <div id="neon-cascade-arena" class="game-arena hidden">
+            <!-- HUD -->
+            <header class="hud">
+                <button id="cascade-back-btn" class="hud-btn" title="Kembali ke Menu Utama">🏡</button>
+                <div class="hud-panel score-panel" style="border-color: rgba(6, 182, 212, 0.25); box-shadow: 0 8px 32px rgba(0,0,0,0.37), inset 0 0 8px rgba(6, 182, 212, 0.1);">
+                    <span class="label">SCORE</span>
+                    <span id="cascade-score-val" class="value" style="color: var(--accent-cyan); text-shadow: 0 0 10px rgba(6,182,212,0.4);">0</span>
+                </div>
+                <div class="hud-panel best-panel" style="border-color: rgba(236, 72, 153, 0.25); box-shadow: 0 8px 32px rgba(0,0,0,0.37), inset 0 0 8px rgba(236, 72, 153, 0.1);">
+                    <span class="label">BEST</span>
+                    <span id="cascade-best-val" class="value" style="color: var(--accent-magenta); text-shadow: 0 0 10px rgba(236,72,153,0.4);">0</span>
+                </div>
+            </header>
+
+            <!-- Status Header (Line and Level counts) -->
+            <div class="cascade-status-container">
+                <div class="status-panel">
+                    <span class="status-label">LINES</span>
+                    <span id="cascade-lines-val" class="status-value">0</span>
+                </div>
+                <div class="status-panel">
+                    <span class="status-label">LEVEL</span>
+                    <span id="cascade-level-val" class="status-value">1</span>
+                </div>
+            </div>
+
+            <!-- Dynamic Game Container -->
+            <main class="game-container">
+                <!-- Next Piece Preview Panel -->
+                <div class="cascade-next-panel">
+                    <span class="next-label">NEXT</span>
+                    <div class="next-circle-wrapper" style="border-color: rgba(6, 182, 212, 0.25); box-shadow: 0 0 10px rgba(6, 182, 212, 0.1);">
+                        <canvas id="cascade-preview-canvas" width="60" height="60" style="display: block; width: 60px; height: 60px;"></canvas>
+                    </div>
+                </div>
+
+                <!-- Canvas Wrapper -->
+                <div class="canvas-wrapper">
+                    <canvas id="cascade-canvas"></canvas>
+                </div>
+
+                <!-- On-Screen Console D-pad Controller (Mobile touch only) -->
+                <div class="mobile-controls">
+                    <button id="ctrl-left" class="ctrl-btn">◀</button>
+                    <button id="ctrl-rotate" class="ctrl-btn rotate-btn">🔄</button>
+                    <button id="ctrl-right" class="ctrl-btn">▶</button>
+                    <button id="ctrl-drop" class="ctrl-btn drop-btn">▼</button>
+                </div>
+            </main>
+
+            <!-- Splash Screen / Touch to Start -->
+            <div id="cascade-splash-screen" class="overlay active">
+                <div class="overlay-card glass">
+                    <div class="cosmic-logo-large animate-float">
+                        <span class="glow-text">NEON</span>
+                        <span class="accent-text" style="color: var(--accent-cyan); text-shadow: 0 0 15px rgba(6,182,212,0.6);">CASCADE</span>
+                    </div>
+                    <p class="description">Susun balok neon bercahaya! Bersihkan baris untuk memicu <strong>Cascade Physics</strong> yang akan meruntuhkan sisa balok secara otomatis ke lubang bawah!</p>
+                    <div class="control-guide">
+                        <div class="guide-title">KONTROL PERMAINAN:</div>
+                        <p class="guide-text">💻 PC: Kiri/Kanan (Panah), Atas (Putar), Bawah (Cepat), Spasi (Instan)</p>
+                        <p class="guide-text">📱 HP: Gunakan tombol D-pad di bawah layar</p>
+                    </div>
+                    <button id="cascade-start-btn" class="btn-primary" style="background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); box-shadow: 0 10px 25px rgba(6, 182, 212, 0.35);">MULAI BERMAIN</button>
+                    <p class="tap-hint">*Suara dan getaran akan diaktifkan secara otomatis</p>
+                </div>
+            </div>
+
+            <!-- Game Over Screen -->
+            <div id="cascade-game-over-screen" class="overlay">
+                <div class="overlay-card glass">
+                    <h2 class="game-over-title" style="color: var(--accent-cyan); text-shadow: 0 0 20px rgba(6, 182, 212, 0.5);">GAME OVER</h2>
+                    <p class="game-over-subtitle">Tumpukan balok mencapai batas atas!</p>
+                    
+                    <div class="result-stats">
+                        <div class="result-row">
+                            <span>Skor Akhir:</span>
+                            <strong id="cascade-final-score" class="score-highlight" style="color: var(--accent-cyan); text-shadow: 0 0 10px rgba(6, 182, 212, 0.4);">0</strong>
+                        </div>
+                        <div class="result-row">
+                            <span>Skor Tertinggi:</span>
+                            <strong id="cascade-final-best" class="best-highlight" style="color: var(--accent-magenta); text-shadow: 0 0 10px rgba(236, 72, 153, 0.4);">0</strong>
+                        </div>
+                    </div>
+                    
+                    <button id="cascade-restart-btn" class="btn-primary" style="background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));">MAIN LAGI</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Game Scripts (ordered correctly for global dependency) -->
+    <script src="audio.js"></script>
+    <script src="haptics.js"></script>
+    <script src="physics.js"></script>
+    <script src="game.js"></script>
+    <script src="neon-cascade.js"></script>
+    <script src="lobby.js"></script>
+</body>
+</html>
