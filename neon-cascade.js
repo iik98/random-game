@@ -122,6 +122,10 @@ const NeonCascadeEngine = {
         this.canvas = document.getElementById('cascade-canvas');
         this.ctx = this.canvas.getContext('2d');
 
+        // Detect mobile or low-end device to automatically activate high-performance low-spec mode
+        this.isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.innerWidth <= 768);
+        console.log(`[Neon Cascade] Low-spec performance mode active: ${this.isMobile}`);
+
         // Initialize grid matrix early to prevent drawGridBlocks crashes before game starts
         this.grid = Array(this.rows).fill(null).map(() => Array(this.cols).fill(null));
 
@@ -640,7 +644,8 @@ const NeonCascadeEngine = {
                 const px = x * this.cellSize + this.cellSize / 2;
                 const py = rowY * this.cellSize + this.cellSize / 2;
                 
-                for (let i = 0; i < 8; i++) {
+                const sparksPerBlock = this.isMobile ? 3 : 8;
+                for (let i = 0; i < sparksPerBlock; i++) {
                     const angle = Math.random() * Math.PI * 2;
                     const speed = 1.0 + Math.random() * 3.0;
                     this.particles.push({
@@ -743,8 +748,10 @@ const NeonCascadeEngine = {
                     const py = offsetY + r * cellSize;
 
                     ctx.save();
-                    ctx.shadowColor = color;
-                    ctx.shadowBlur = 4;
+                    if (!this.isMobile) {
+                        ctx.shadowColor = color;
+                        ctx.shadowBlur = 4;
+                    }
 
                     ctx.beginPath();
                     ctx.rect(px + pad, py + pad, cellSize - pad * 2, cellSize - pad * 2);
@@ -841,7 +848,8 @@ const NeonCascadeEngine = {
                         const gridX = p.x + x;
                         const gridY = p.y + y;
                         
-                        if (gridY >= 0 && Math.random() < 0.12) {
+                        const spawnChance = this.isMobile ? 0.04 : 0.12;
+                        if (gridY >= 0 && Math.random() < spawnChance) {
                             const px = (gridX + Math.random()) * this.cellSize;
                             const py = (gridY + Math.random()) * this.cellSize;
                             
@@ -1024,8 +1032,10 @@ const NeonCascadeEngine = {
         this.ctx.globalAlpha = alpha;
         
         const shadowCol = color || '#ffffff';
-        this.ctx.shadowColor = shadowCol;
-        this.ctx.shadowBlur = 8;
+        if (!this.isMobile) {
+            this.ctx.shadowColor = shadowCol;
+            this.ctx.shadowBlur = 8;
+        }
 
         this.ctx.beginPath();
         const rx = px + pad;
@@ -1084,8 +1094,10 @@ const NeonCascadeEngine = {
             this.ctx.strokeStyle = '#ffffff';
             this.ctx.lineWidth = 4;
             
-            this.ctx.shadowColor = '#06b6d4';
-            this.ctx.shadowBlur = 15;
+            if (!this.isMobile) {
+                this.ctx.shadowColor = '#06b6d4';
+                this.ctx.shadowBlur = 15;
+            }
             
             this.ctx.beginPath();
             const leftX = (this.logicalWidth - l.width) / 2;

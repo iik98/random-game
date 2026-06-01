@@ -47,8 +47,13 @@ const GameEngine = {
         this.canvas = document.getElementById('game-canvas');
         this.ctx = this.canvas.getContext('2d');
         
+        // Detect mobile or low-end device to automatically activate high-performance low-spec mode
+        this.isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.innerWidth <= 768);
+        console.log(`[Cosmic Fusion] Low-spec performance mode active: ${this.isMobile}`);
+        
         // Initialize Physics World
         this.world = new PhysicsWorld(this.logicalWidth, this.logicalHeight);
+        this.world.substeps = this.isMobile ? 4 : 8;
         
         // Connect Physics callback to game engine functions
         this.world.onMergeCallback = (x, y, nextLevel) => this.onMerge(x, y, nextLevel);
@@ -361,7 +366,7 @@ const GameEngine = {
         });
 
         // Trigger Particles Explosion (satisfying visual pop)
-        const particleCount = 14 + level * 2;
+        const particleCount = this.isMobile ? (6 + level) : (14 + level * 2);
         const color = PLANET_PRESETS[level].color;
         
         for (let i = 0; i < particleCount; i++) {
@@ -556,8 +561,10 @@ const GameEngine = {
             this.ctx.fillStyle = t.color;
             this.ctx.globalAlpha = t.alpha;
             // High-contrast background drop shadow
-            this.ctx.shadowColor = 'rgba(0,0,0,0.85)';
-            this.ctx.shadowBlur = 3;
+            if (!this.isMobile) {
+                this.ctx.shadowColor = 'rgba(0,0,0,0.85)';
+                this.ctx.shadowBlur = 3;
+            }
             this.ctx.fillText(t.text, t.x, t.y);
         }
         this.ctx.restore();
@@ -632,8 +639,10 @@ const GameEngine = {
         grad.addColorStop(1, p.gradient[0]);
 
         // Planet shadow/glow effect
-        this.ctx.shadowColor = p.color;
-        this.ctx.shadowBlur = p.isSpawner ? 10 : 8 * p.scale;
+        if (!this.isMobile) {
+            this.ctx.shadowColor = p.color;
+            this.ctx.shadowBlur = p.isSpawner ? 10 : 8 * p.scale;
+        }
         
         // Draw Main Planet Sphere
         this.ctx.fillStyle = grad;
@@ -642,7 +651,9 @@ const GameEngine = {
         this.ctx.fill();
 
         // Remove shadow for internal details
-        this.ctx.shadowBlur = 0;
+        if (!this.isMobile) {
+            this.ctx.shadowBlur = 0;
+        }
 
         // Draw atmospheric highlight rim (makes spheres feel premium and glossy)
         this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
@@ -672,8 +683,10 @@ const GameEngine = {
         for (let f of this.mergeFlashes) {
             this.ctx.strokeStyle = f.color;
             this.ctx.globalAlpha = f.alpha;
-            this.ctx.shadowColor = f.color;
-            this.ctx.shadowBlur = 12;
+            if (!this.isMobile) {
+                this.ctx.shadowColor = f.color;
+                this.ctx.shadowBlur = 12;
+            }
             this.ctx.beginPath();
             this.ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
             this.ctx.stroke();
@@ -690,8 +703,10 @@ const GameEngine = {
             // Glow bright warning red when overflows are pending
             const pulse = 0.4 + Math.sin(Date.now() * 0.01) * 0.3;
             this.ctx.strokeStyle = `rgba(239, 68, 68, ${pulse})`;
-            this.ctx.shadowColor = 'red';
-            this.ctx.shadowBlur = 15;
+            if (!this.isMobile) {
+                this.ctx.shadowColor = 'red';
+                this.ctx.shadowBlur = 15;
+            }
             this.ctx.lineWidth = 2.5;
         } else {
             // Calm cyan guideline
