@@ -65,7 +65,8 @@ const NeonBlockFitEngine = {
         '#eab308': ['#ca8a04', '#eab308', '#fef08a'], // Gold
         '#10b981': ['#059669', '#10b981', '#6ee7b7'], // Green
         '#8b5cf6': ['#7c3aed', '#8b5cf6', '#c4b5fd'], // Purple
-        '#f97316': ['#ea580c', '#f97316', '#fdba74']  // Orange
+        '#f97316': ['#ea580c', '#f97316', '#fdba74'], // Orange
+        '#3b82f6': ['#2563eb', '#3b82f6', '#93c5fd']  // Blue
     },
 
     // Handcrafted levels using absolute layout grid partitions (guarantees solvability)
@@ -133,6 +134,76 @@ const NeonBlockFitEngine = {
             { color: '#ec4899', coords: [[0,2], [0,3], [1,3]] },
             { color: '#eab308', coords: [[1,2], [2,2], [2,3]] },
             { color: '#10b981', coords: [[3,3]] }
+        ],
+        11: [
+            { color: '#06b6d4', coords: [[0,0], [1,0], [2,0], [0,1], [0,2]] },
+            { color: '#ec4899', coords: [[3,0], [4,0], [4,1], [4,2], [4,3]] },
+            { color: '#eab308', coords: [[0,3], [0,4], [1,4], [2,4]] },
+            { color: '#10b981', coords: [[3,4], [4,4]] }
+        ],
+        12: [
+            { color: '#06b6d4', coords: [[0,0], [1,0], [2,0]] },
+            { color: '#ec4899', coords: [[3,0], [4,0], [3,1]] },
+            { color: '#eab308', coords: [[0,4], [1,4], [2,4]] },
+            { color: '#10b981', coords: [[3,4], [4,4], [3,3]] },
+            { color: '#8b5cf6', coords: [[1,1], [2,1], [2,2], [2,3], [1,3]] }
+        ],
+        13: [
+            { color: '#06b6d4', coords: [[0,0], [0,1], [1,1]] },
+            { color: '#ec4899', coords: [[4,0], [4,1], [3,1]] },
+            { color: '#eab308', coords: [[1,2], [2,2], [3,2]] },
+            { color: '#10b981', coords: [[1,3], [0,4], [1,4]] },
+            { color: '#8b5cf6', coords: [[3,3], [3,4], [4,4]] },
+            { color: '#f97316', coords: [[2,4]] }
+        ],
+        14: [
+            { color: '#06b6d4', coords: [[0,0], [1,0], [0,1], [1,1]] },
+            { color: '#ec4899', coords: [[3,0], [4,0], [3,1], [4,1]] },
+            { color: '#eab308', coords: [[0,3], [1,3], [0,4], [1,4]] },
+            { color: '#10b981', coords: [[3,3], [4,3], [3,4], [4,4]] },
+            { color: '#8b5cf6', coords: [[2,2]] }
+        ],
+        15: [
+            { color: '#06b6d4', coords: [[1,0], [2,1], [2,2]] },
+            { color: '#ec4899', coords: [[4,0], [3,1], [3,2]] },
+            { color: '#eab308', coords: [[1,2], [0,3], [1,3], [0,4]] },
+            { color: '#10b981', coords: [[4,2], [4,3], [5,3], [5,4]] },
+            { color: '#8b5cf6', coords: [[2,4], [3,4]] }
+        ],
+        16: [
+            { color: '#06b6d4', coords: [[2,0], [3,0], [4,1]] },
+            { color: '#ec4899', coords: [[1,1], [0,2], [0,3]] },
+            { color: '#eab308', coords: [[1,4], [2,5], [3,5]] },
+            { color: '#10b981', coords: [[4,4], [5,3], [5,2]] }
+        ],
+        17: [
+            { color: '#06b6d4', coords: [[0,0], [1,0], [0,1], [1,1]] },
+            { color: '#ec4899', coords: [[3,0], [4,0], [3,1], [4,1]] },
+            { color: '#eab308', coords: [[2,0], [2,1], [2,2]] },
+            { color: '#10b981', coords: [[1,2], [1,3], [2,3]] },
+            { color: '#8b5cf6', coords: [[3,2], [3,3], [2,4]] }
+        ],
+        18: [
+            { color: '#06b6d4', coords: [[1,0], [2,0], [3,0], [4,0]] },
+            { color: '#ec4899', coords: [[0,1], [0,2], [0,3]] },
+            { color: '#eab308', coords: [[1,1], [2,1], [1,2]] },
+            { color: '#10b981', coords: [[1,3], [2,3], [1,4]] },
+            { color: '#8b5cf6', coords: [[2,4], [3,4], [4,4]] }
+        ],
+        19: [
+            { color: '#06b6d4', coords: [[0,0], [1,0], [2,0], [0,1], [0,2]] },
+            { color: '#ec4899', coords: [[1,1], [2,1], [3,1], [1,2], [2,2]] },
+            { color: '#eab308', coords: [[4,2], [3,3], [4,3], [3,4], [4,4]] },
+            { color: '#10b981', coords: [[3,2], [2,3], [1,3], [2,4]] }
+        ],
+        20: [
+            { color: '#06b6d4', coords: [[2,0], [3,0], [2,1], [3,1]] },
+            { color: '#ec4899', coords: [[1,1], [0,2], [1,2]] },
+            { color: '#eab308', coords: [[4,1], [4,2], [5,2]] },
+            { color: '#10b981', coords: [[0,3], [1,3], [1,4]] },
+            { color: '#8b5cf6', coords: [[4,3], [5,3], [4,4]] },
+            { color: '#f97316', coords: [[2,5], [3,5], [2,4], [3,4]] },
+            { color: '#3b82f6', coords: [[2,2], [3,2], [2,3], [3,3]] }
         ]
     },
 
@@ -573,8 +644,8 @@ const NeonBlockFitEngine = {
         }
         this.updateHUD();
 
-        // 10 Unique levels limit check
-        if (this.level > 10) {
+        // 20 Unique levels limit check
+        if (this.level > 20) {
             this.triggerGameCompleted();
         } else {
             this.loadLevel(this.level);
