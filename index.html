@@ -17,7 +17,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
 
     <!-- CSS File -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2">
 </head>
 
 <body>
@@ -66,6 +66,48 @@
                         <strong id="lobby-best-cascade">0</strong>
                     </div>
                     <button class="btn-card-play" data-game="cascade">PLAY GAME</button>
+                </div>
+
+                <!-- Card 3: Pulse Arrow -->
+                <div class="game-card glass" id="card-pulse-arrow">
+                    <div class="card-glow"
+                        style="background: radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, transparent 60%);"></div>
+                    <div class="card-icon arrow-icon">🎯</div>
+                    <h3 class="card-title">Pulse Arrow</h3>
+                    <p class="card-desc">Ketuk panah neon tepat waktu mengikuti ritme kosmik untuk memicu ledakan Vector Sparks!</p>
+                    <div class="card-score-badge">
+                        <span>BEST:</span>
+                        <strong id="lobby-best-arrow">0</strong>
+                    </div>
+                    <button class="btn-card-play" data-game="arrow">PLAY GAME</button>
+                </div>
+
+                <!-- Card 4: Arrow Out -->
+                <div class="game-card glass" id="card-arrow-out">
+                    <div class="card-glow"
+                        style="background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 60%);"></div>
+                    <div class="card-icon puzzle-icon">🧩</div>
+                    <h3 class="card-title">Arrow Out</h3>
+                    <p class="card-desc">Ketuk blok panah untuk menerbangkannya keluar! Temukan urutan yang tepat agar jalan tidak terhalang!</p>
+                    <div class="card-score-badge">
+                        <span>BEST:</span>
+                        <strong id="lobby-best-out">0</strong>
+                    </div>
+                    <button class="btn-card-play" data-game="out">PLAY GAME</button>
+                </div>
+
+                <!-- Card 5: Neon Block Fit -->
+                <div class="game-card glass" id="card-block-fit">
+                    <div class="card-glow"
+                        style="background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 60%);"></div>
+                    <div class="card-icon block-icon">🟪</div>
+                    <h3 class="card-title">Neon Block Fit</h3>
+                    <p class="card-desc">Pasang balok-balok neon ke dalam cetakan yang tepat! Uji kecerdasan spasial Anda di setiap level!</p>
+                    <div class="card-score-badge">
+                        <span>BEST:</span>
+                        <strong id="lobby-best-blockfit">0</strong>
+                    </div>
+                    <button class="btn-card-play" data-game="blockfit">PLAY GAME</button>
                 </div>
             </div>
 
@@ -265,15 +307,244 @@
                 </div>
             </div>
         </div>
+
+        <!-- ==========================================================================
+           4. PULSE ARROW ARENA
+           ========================================================================== -->
+        <div id="pulse-arrow-arena" class="game-arena hidden">
+            <!-- HUD -->
+            <header class="hud">
+                <button id="arrow-back-btn" class="hud-btn" title="Kembali ke Menu Utama">🏡</button>
+                <div class="hud-panel score-panel" style="border-color: rgba(236, 72, 153, 0.25); box-shadow: 0 8px 32px rgba(0,0,0,0.37);">
+                    <span class="label">SCORE</span>
+                    <span id="arrow-score-val" class="value" style="color: var(--accent-magenta); text-shadow: 0 0 10px rgba(236,72,153,0.4);">0</span>
+                </div>
+                <div class="hud-panel best-panel" style="border-color: rgba(236, 72, 153, 0.25); box-shadow: 0 8px 32px rgba(0,0,0,0.37);">
+                    <span class="label">BEST</span>
+                    <span id="arrow-best-val" class="value" style="color: var(--accent-gold); text-shadow: 0 0 10px rgba(234,179,8,0.4);">0</span>
+                </div>
+            </header>
+
+            <!-- Life/Health Gauge -->
+            <div class="arrow-life-container">
+                <span class="life-icon">❤️</span>
+                <div class="life-bar-bg">
+                    <div id="arrow-life-fill" class="life-bar-fill" style="width: 100%;"></div>
+                </div>
+                <span id="arrow-combo-val" class="combo-badge">0x COMBO</span>
+            </div>
+
+            <!-- Dynamic Game Container -->
+            <main class="game-container" style="flex-direction: column;">
+                <!-- Canvas Wrapper -->
+                <div class="canvas-wrapper" style="position: relative; overflow: visible;">
+                    <canvas id="arrow-canvas"></canvas>
+                </div>
+
+                <!-- On-Screen Console Arrow Taps (Mobile touch / click fallback) -->
+                <div class="mobile-controls arrow-controls">
+                    <button id="arrow-ctrl-left" class="arrow-btn btn-cyan">◀</button>
+                    <button id="arrow-ctrl-down" class="arrow-btn btn-green">▼</button>
+                    <button id="arrow-ctrl-up" class="arrow-btn btn-magenta">▲</button>
+                    <button id="arrow-ctrl-right" class="arrow-btn btn-gold">▶</button>
+                </div>
+            </main>
+
+            <!-- Splash Screen / Touch to Start -->
+            <div id="arrow-splash-screen" class="overlay active">
+                <div class="overlay-card glass">
+                    <div class="cosmic-logo-large animate-float">
+                        <span class="glow-text" style="color: var(--accent-magenta); text-shadow: 0 0 15px rgba(236,72,153,0.6);">PULSE</span>
+                        <span class="accent-text" style="color: var(--accent-gold); text-shadow: 0 0 15px rgba(234,179,8,0.6);">ARROW</span>
+                    </div>
+                    <p class="description">Ketuk tombol panah tepat saat panah yang naik sejajar dengan target di atas! Jaga ritme kosmik, kumpulkan kombo, dan jangan biarkan energi Anda habis!</p>
+                    <div class="control-guide">
+                        <div class="guide-title">KONTROL PERMAINAN:</div>
+                        <p class="guide-text">💻 PC: Kiri, Bawah, Atas, Kanan (Tombol Panah / WASD)</p>
+                        <p class="guide-text">📱 HP: Ketuk tombol panel panah berwarna di bawah layar</p>
+                    </div>
+                    <button id="arrow-start-btn" class="btn-primary" style="background: linear-gradient(135deg, var(--accent-magenta), var(--accent-gold)); box-shadow: 0 10px 25px rgba(236, 72, 153, 0.35);">MULAI BERMAIN</button>
+                    <p class="tap-hint">*Suara dan getaran akan diaktifkan secara otomatis</p>
+                </div>
+            </div>
+
+            <!-- Game Over Screen -->
+            <div id="arrow-game-over-screen" class="overlay">
+                <div class="overlay-card glass">
+                    <h2 class="game-over-title" style="color: var(--accent-magenta); text-shadow: 0 0 20px rgba(236, 72, 153, 0.5);">GAME OVER</h2>
+                    <p class="game-over-subtitle">Energi ritme kosmik Anda telah habis!</p>
+
+                    <div class="result-stats">
+                        <div class="result-row">
+                            <span>Skor Akhir:</span>
+                            <strong id="arrow-final-score" class="score-highlight" style="color: var(--accent-magenta); text-shadow: 0 0 10px rgba(236, 72, 153, 0.4);">0</strong>
+                        </div>
+                        <div class="result-row">
+                            <span>Skor Tertinggi:</span>
+                            <strong id="arrow-final-best" class="best-highlight" style="color: var(--accent-gold); text-shadow: 0 0 10px rgba(234, 179, 8, 0.4);">0</strong>
+                        </div>
+                    </div>
+
+                    <button id="arrow-restart-btn" class="btn-primary" style="background: linear-gradient(135deg, var(--accent-magenta), var(--accent-gold));">MAIN LAGI</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================================
+           5. ARROW OUT ARENA
+           ========================================================================== -->
+        <div id="arrow-out-arena" class="game-arena hidden">
+            <!-- HUD -->
+            <header class="hud">
+                <button id="out-back-btn" class="hud-btn" title="Kembali ke Menu Utama">🏡</button>
+                <div class="hud-panel score-panel" style="border-color: rgba(16, 185, 129, 0.25); box-shadow: 0 8px 32px rgba(0,0,0,0.37);">
+                    <span class="label">LEVEL</span>
+                    <span id="out-level-val" class="value" style="color: var(--accent-cyan); text-shadow: 0 0 10px rgba(6,182,212,0.4);">1</span>
+                </div>
+                <div class="hud-panel best-panel" style="border-color: rgba(16, 185, 129, 0.25); box-shadow: 0 8px 32px rgba(0,0,0,0.37);">
+                    <span class="label">MOVES</span>
+                    <span id="out-moves-val" class="value" style="color: var(--accent-gold); text-shadow: 0 0 10px rgba(234,179,8,0.4);">0</span>
+                </div>
+            </header>
+
+            <!-- Life/Health Gauge or Level Stats -->
+            <div class="arrow-life-container out-stats-container">
+                <span class="life-icon">🧩</span>
+                <span class="combo-badge" style="color: var(--accent-cyan); text-shadow: 0 0 8px rgba(6,182,212,0.5);">BERSIHKAN KISI!</span>
+                <span id="out-score-val" class="combo-badge" style="margin-left: auto;">SCORE: 0</span>
+            </div>
+
+            <!-- Dynamic Game Container -->
+            <main class="game-container" style="flex-direction: column;">
+                <!-- Canvas Wrapper -->
+                <div class="canvas-wrapper" style="position: relative; overflow: visible;">
+                    <canvas id="out-canvas"></canvas>
+                </div>
+            </main>
+
+            <!-- Splash Screen / Touch to Start -->
+            <div id="out-splash-screen" class="overlay active">
+                <div class="overlay-card glass">
+                    <div class="cosmic-logo-large animate-float">
+                        <span class="glow-text" style="color: #10b981; text-shadow: 0 0 15px rgba(16,185,129,0.6);">ARROW</span>
+                        <span class="accent-text" style="color: var(--accent-cyan); text-shadow: 0 0 15px rgba(6,182,212,0.6);">OUT</span>
+                    </div>
+                    <p class="description">Ketuk blok panah berwarna untuk menerbangkannya keluar layar! Blok hanya bisa terbang ke arah panah menunjuk dan jalan harus bersih tanpa terhalang blok lain!</p>
+                    <div class="control-guide">
+                        <div class="guide-title">CARA BERMAIN:</div>
+                        <p class="guide-text">🖱️ PC: Klik kiri pada blok panah yang tidak terhalang</p>
+                        <p class="guide-text">📱 HP: Sentuh langsung pada blok panah untuk menerbangkannya</p>
+                    </div>
+                    <button id="out-start-btn" class="btn-primary" style="background: linear-gradient(135deg, #10b981, var(--accent-cyan)); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35);">MULAI BERMAIN</button>
+                    <p class="tap-hint">*Suara dan getaran akan diaktifkan secara otomatis</p>
+                </div>
+            </div>
+
+            <!-- Game Victory / Over Screen -->
+            <div id="out-game-over-screen" class="overlay">
+                <div class="overlay-card glass">
+                    <h2 class="game-over-title" style="color: #10b981; text-shadow: 0 0 20px rgba(16,185,129,0.5);">SELESAI!</h2>
+                    <p class="game-over-subtitle">Anda berhasil membersihkan seluruh kisi panah!</p>
+
+                    <div class="result-stats">
+                        <div class="result-row">
+                            <span>Level Terakhir:</span>
+                            <strong id="out-final-level" class="score-highlight" style="color: var(--accent-cyan); text-shadow: 0 0 10px rgba(6,182,212,0.4);">1</strong>
+                        </div>
+                        <div class="result-row">
+                            <span>Total Skor:</span>
+                            <strong id="out-final-score" class="best-highlight" style="color: var(--accent-gold); text-shadow: 0 0 10px rgba(234, 179, 8, 0.4);">0</strong>
+                        </div>
+                    </div>
+
+                    <button id="out-restart-btn" class="btn-primary" style="background: linear-gradient(135deg, #10b981, var(--accent-cyan));">MAIN LAGI</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================================
+           6. NEON BLOCK FIT ARENA
+           ========================================================================== -->
+        <div id="block-fit-arena" class="game-arena hidden">
+            <!-- HUD -->
+            <header class="hud">
+                <button id="blockfit-back-btn" class="hud-btn" title="Kembali ke Menu Utama">🏡</button>
+                <div class="hud-panel score-panel" style="border-color: rgba(139, 92, 246, 0.25); box-shadow: 0 8px 32px rgba(0,0,0,0.37);">
+                    <span class="label">LEVEL</span>
+                    <span id="blockfit-level-val" class="value" style="color: var(--accent-purple); text-shadow: 0 0 10px rgba(139,92,246,0.4);">1</span>
+                </div>
+                <div class="hud-panel best-panel" style="border-color: rgba(139, 92, 246, 0.25); box-shadow: 0 8px 32px rgba(0,0,0,0.37);">
+                    <span class="label">BEST</span>
+                    <span id="blockfit-best-val" class="value" style="color: var(--accent-gold); text-shadow: 0 0 10px rgba(234,179,8,0.4);">0</span>
+                </div>
+            </header>
+
+            <!-- Status Header -->
+            <div class="arrow-life-container out-stats-container">
+                <span class="life-icon">🧱</span>
+                <span class="combo-badge" style="color: var(--accent-purple); text-shadow: 0 0 8px rgba(139,92,246,0.5);">PASANG SEMUA BALOK!</span>
+                <span id="blockfit-score-val" class="combo-badge" style="margin-left: auto;">SCORE: 0</span>
+            </div>
+
+            <!-- Dynamic Game Container -->
+            <main class="game-container" style="flex-direction: column;">
+                <!-- Canvas Wrapper -->
+                <div class="canvas-wrapper" style="position: relative; overflow: visible;">
+                    <canvas id="blockfit-canvas"></canvas>
+                </div>
+            </main>
+
+            <!-- Splash Screen / Touch to Start -->
+            <div id="blockfit-splash-screen" class="overlay active">
+                <div class="overlay-card glass">
+                    <div class="cosmic-logo-large animate-float">
+                        <span class="glow-text" style="color: var(--accent-purple); text-shadow: 0 0 15px rgba(139,92,246,0.6);">BLOCK</span>
+                        <span class="accent-text" style="color: var(--accent-cyan); text-shadow: 0 0 15px rgba(6,182,212,0.6);">FIT</span>
+                    </div>
+                    <p class="description">Seret balok-balok neon dari baki bawah dan susun agar pas menutupi seluruh pola cetakan di papan atas! Balok tidak dapat diputar.</p>
+                    <div class="control-guide">
+                        <div class="guide-title">CARA BERMAIN:</div>
+                        <p class="guide-text">🖱️ PC: Klik & seret balok dari baki ke papan</p>
+                        <p class="guide-text">📱 HP: Sentuh & seret balok dengan jari Anda</p>
+                    </div>
+                    <button id="blockfit-start-btn" class="btn-primary" style="background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan)); box-shadow: 0 10px 25px rgba(139, 92, 246, 0.35);">MULAI BERMAIN</button>
+                    <p class="tap-hint">*Suara dan getaran akan diaktifkan secara otomatis</p>
+                </div>
+            </div>
+
+            <!-- Game Victory / Over Screen -->
+            <div id="blockfit-game-over-screen" class="overlay">
+                <div class="overlay-card glass">
+                    <h2 class="game-over-title" style="color: var(--accent-purple); text-shadow: 0 0 20px rgba(139,92,246,0.5);">SELESAI!</h2>
+                    <p class="game-over-subtitle">Anda berhasil mengisi seluruh cetakan dengan sempurna!</p>
+
+                    <div class="result-stats">
+                        <div class="result-row">
+                            <span>Level Terakhir:</span>
+                            <strong id="blockfit-final-level" class="score-highlight" style="color: var(--accent-cyan); text-shadow: 0 0 10px rgba(6,182,212,0.4);">1</strong>
+                        </div>
+                        <div class="result-row">
+                            <span>Total Skor:</span>
+                            <strong id="blockfit-final-score" class="best-highlight" style="color: var(--accent-gold); text-shadow: 0 0 10px rgba(234, 179, 8, 0.4);">0</strong>
+                        </div>
+                    </div>
+
+                    <button id="blockfit-restart-btn" class="btn-primary" style="background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));">MAIN LAGI</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Core Game Scripts (ordered correctly for global dependency) -->
-    <script src="audio.js"></script>
-    <script src="haptics.js"></script>
-    <script src="physics.js"></script>
-    <script src="game.js"></script>
-    <script src="neon-cascade.js"></script>
-    <script src="lobby.js"></script>
+    <script src="audio.js?v=2"></script>
+    <script src="haptics.js?v=2"></script>
+    <script src="physics.js?v=2"></script>
+    <script src="game.js?v=2"></script>
+    <script src="neon-cascade.js?v=2"></script>
+    <script src="pulse-arrow.js?v=2"></script>
+    <script src="arrow-out.js?v=2"></script>
+    <script src="neon-block-fit.js?v=2"></script>
+    <script src="lobby.js?v=2"></script>
 </body>
 
 </html>

@@ -358,6 +358,244 @@ const AudioEngine = {
         
         osc.start(now);
         osc.stop(now + 0.09);
+    },
+
+    // Synthesized chime hit reactions for Pulse Arrow rhythm game
+    playTapHit(rating) {
+        if (!this.ctx || this.muted) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+
+        const now = this.ctx.currentTime;
+
+        if (rating === 'perfect') {
+            // Bright cybernetic major-chord bell (Dual oscillators C6 + E6)
+            const osc1 = this.ctx.createOscillator();
+            const osc2 = this.ctx.createOscillator();
+            const gain1 = this.ctx.createGain();
+            const gain2 = this.ctx.createGain();
+
+            osc1.type = 'sine';
+            osc1.frequency.setValueAtTime(1046.50, now); // C6
+            osc1.frequency.exponentialRampToValueAtTime(1318.51, now + 0.15); // E6
+
+            osc2.type = 'triangle';
+            osc2.frequency.setValueAtTime(1318.51, now); // E6
+            osc2.frequency.exponentialRampToValueAtTime(1567.98, now + 0.1); // G6
+
+            gain1.gain.setValueAtTime(0.08, now);
+            gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+            gain2.gain.setValueAtTime(0.04, now);
+            gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+
+            osc1.connect(gain1);
+            osc2.connect(gain2);
+
+            gain1.connect(this.ctx.destination);
+            gain2.connect(this.ctx.destination);
+
+            osc1.start(now);
+            osc2.start(now);
+            osc1.stop(now + 0.16);
+            osc2.stop(now + 0.11);
+        } else if (rating === 'good') {
+            // Simple clean retro beep
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(783.99, now); // G5
+            osc.frequency.exponentialRampToValueAtTime(880.00, now + 0.08); // A5
+
+            gain.gain.setValueAtTime(0.06, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+
+            osc.start(now);
+            osc.stop(now + 0.09);
+        } else {
+            // "Miss" short scratchy error white noise slide
+            try {
+                const bufferSize = this.ctx.sampleRate * 0.08;
+                const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = (Math.random() * 2 - 1) * 0.4;
+                }
+
+                const noise = this.ctx.createBufferSource();
+                noise.buffer = buffer;
+
+                const filter = this.ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.setValueAtTime(250, now);
+
+                const gain = this.ctx.createGain();
+                gain.gain.setValueAtTime(0.07, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                noise.start(now);
+                noise.stop(now + 0.08);
+            } catch (e) {
+                // Fallback click
+                this.playShiftSound();
+            }
+        }
+    },
+
+    // Synthesized backing rhythm beat metronome (low sub kick / hihat tick)
+    playRhythmBeat(isStrong = false) {
+        if (!this.ctx || this.muted) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+
+        const now = this.ctx.currentTime;
+
+        if (isStrong) {
+            // Soft synth sub kick drum
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(95, now);
+            osc.frequency.exponentialRampToValueAtTime(45, now + 0.12);
+
+            gain.gain.setValueAtTime(0.12, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+
+            osc.start(now);
+            osc.stop(now + 0.13);
+        } else {
+            // Closed metal hi-hat tick (bandpassed white noise)
+            try {
+                const bufferSize = this.ctx.sampleRate * 0.02; // ultra-short tick
+                const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+
+                const noise = this.ctx.createBufferSource();
+                noise.buffer = buffer;
+
+                const filter = this.ctx.createBiquadFilter();
+                filter.type = 'highpass';
+                filter.frequency.setValueAtTime(7000, now);
+
+                const gain = this.ctx.createGain();
+                gain.gain.setValueAtTime(0.02, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.02);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                noise.start(now);
+                noise.stop(now + 0.03);
+            } catch (e) {
+                // Fallback click
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.frequency.setValueAtTime(3000, now);
+                gain.gain.setValueAtTime(0.01, now);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.01);
+            }
+        }
+    },
+
+    // Ascending cyber sweep when an arrow block successfully exits the grid
+    playEscapeSweep() {
+        if (!this.ctx || this.muted) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(320, now);
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.16);
+
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.17);
+    },
+
+    // Rapid double low pitched error chime for blocked puzzle moves
+    playBlockedBeep() {
+        if (!this.ctx || this.muted) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+
+        const now = this.ctx.currentTime;
+
+        // Double notes
+        [150, 120].forEach((freq, idx) => {
+            const time = now + idx * 0.06;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(freq, time);
+
+            // Filter to make it warm/analog
+            const filter = this.ctx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(220, time);
+
+            gain.gain.setValueAtTime(0.14, time);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + 0.12);
+
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(this.ctx.destination);
+
+            osc.start(time);
+            osc.stop(time + 0.13);
+        });
+    },
+
+    // Epic retro chiptune fanfare chord sequence for clearing a level
+    playVictoryFanfare() {
+        if (!this.ctx || this.muted) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+
+        const now = this.ctx.currentTime;
+        
+        // C-Major arpeggio sweeps
+        const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+            const time = now + idx * 0.07;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+
+            osc.type = idx === notes.length - 1 ? 'sine' : 'triangle';
+            osc.frequency.setValueAtTime(freq, time);
+            
+            gain.gain.setValueAtTime(0.08, time);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + 0.28);
+
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+
+            osc.start(time);
+            osc.stop(time + 0.3);
+        });
     }
 };
 

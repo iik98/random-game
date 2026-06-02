@@ -14,9 +14,15 @@ const GameLobby = {
     loadHighScores() {
         const cosmicBest = localStorage.getItem('cosmic_high_score') || 0;
         const cascadeBest = localStorage.getItem('cascade_high_score') || 0;
+        const arrowBest = localStorage.getItem('arrow_high_score') || 0;
+        const outBest = localStorage.getItem('out_high_score') || 0;
+        const blockfitBest = localStorage.getItem('blockfit_high_score') || 0;
         
         document.getElementById('lobby-best-cosmic').textContent = cosmicBest;
         document.getElementById('lobby-best-cascade').textContent = cascadeBest;
+        document.getElementById('lobby-best-arrow').textContent = arrowBest;
+        document.getElementById('lobby-best-out').textContent = outBest;
+        document.getElementById('lobby-best-blockfit').textContent = blockfitBest;
     },
 
     setupEventListeners() {
@@ -43,6 +49,21 @@ const GameLobby = {
         const cascadeBack = document.getElementById('cascade-back-btn');
         if (cascadeBack) {
             cascadeBack.addEventListener('click', () => this.exitToLobby());
+        }
+
+        const arrowBack = document.getElementById('arrow-back-btn');
+        if (arrowBack) {
+            arrowBack.addEventListener('click', () => this.exitToLobby());
+        }
+
+        const outBack = document.getElementById('out-back-btn');
+        if (outBack) {
+            outBack.addEventListener('click', () => this.exitToLobby());
+        }
+
+        const blockfitBack = document.getElementById('blockfit-back-btn');
+        if (blockfitBack) {
+            blockfitBack.addEventListener('click', () => this.exitToLobby());
         }
     },
 
@@ -72,6 +93,36 @@ const GameLobby = {
                 NeonCascadeEngine.launch();
             }
         }
+        else if (gameType === 'arrow') {
+            this.activeGame = 'arrow';
+            const arena = document.getElementById('pulse-arrow-arena');
+            arena.classList.remove('hidden');
+            
+            // Boot Pulse Arrow Engine
+            if (window.PulseArrowEngine) {
+                PulseArrowEngine.launch();
+            }
+        }
+        else if (gameType === 'out') {
+            this.activeGame = 'out';
+            const arena = document.getElementById('arrow-out-arena');
+            arena.classList.remove('hidden');
+            
+            // Boot Arrow Out Engine
+            if (window.ArrowOutEngine) {
+                ArrowOutEngine.launch();
+            }
+        }
+        else if (gameType === 'blockfit') {
+            this.activeGame = 'blockfit';
+            const arena = document.getElementById('block-fit-arena');
+            arena.classList.remove('hidden');
+            
+            // Boot Neon Block Fit Engine
+            if (window.NeonBlockFitEngine) {
+                NeonBlockFitEngine.launch();
+            }
+        }
     },
 
     exitToLobby() {
@@ -85,6 +136,18 @@ const GameLobby = {
         else if (this.activeGame === 'cascade' && window.NeonCascadeEngine) {
             NeonCascadeEngine.halt();
             document.getElementById('neon-cascade-arena').classList.add('hidden');
+        }
+        else if (this.activeGame === 'arrow' && window.PulseArrowEngine) {
+            PulseArrowEngine.halt();
+            document.getElementById('pulse-arrow-arena').classList.add('hidden');
+        }
+        else if (this.activeGame === 'out' && window.ArrowOutEngine) {
+            ArrowOutEngine.halt();
+            document.getElementById('arrow-out-arena').classList.add('hidden');
+        }
+        else if (this.activeGame === 'blockfit' && window.NeonBlockFitEngine) {
+            NeonBlockFitEngine.halt();
+            document.getElementById('block-fit-arena').classList.add('hidden');
         }
 
         this.activeGame = null;

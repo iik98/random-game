@@ -930,5 +930,199 @@ html, body {
     max-width: calc((100dvh - 350px) * 9 / 14);
 }
 
+/* ==========================================================================
+   4. Pulse Arrow Rhythm Game Arena Styling
+   ========================================================================== */
+
+.arrow-icon {
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.15) 0%, transparent 70%);
+    color: var(--accent-magenta);
+    text-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
+}
+
+.arrow-life-container {
+    width: 100%;
+    max-width: 360px;
+    margin: 8px auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 16px;
+    z-index: 5;
+}
+
+.life-icon {
+    font-size: 16px;
+    filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.5));
+}
+
+.life-bar-bg {
+    flex: 1;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 99px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.life-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ef4444, #f43f5e);
+    border-radius: 99px;
+    transition: width 0.15s ease;
+    box-shadow: 0 0 10px rgba(244, 63, 94, 0.5);
+}
+
+.combo-badge {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--accent-gold);
+    text-shadow: 0 0 8px rgba(234, 179, 8, 0.5);
+    white-space: nowrap;
+}
+
+#pulse-arrow-arena .canvas-wrapper {
+    max-width: calc((100dvh - 350px) * 9 / 14);
+}
+
+#arrow-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.arrow-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 360px;
+    margin-top: 15px;
+}
+
+.arrow-btn {
+    flex: 1;
+    height: 60px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.05);
+    background: rgba(13, 17, 43, 0.5);
+    color: var(--text-primary);
+    font-size: 20px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+}
+
+.arrow-btn.btn-cyan {
+    border-color: rgba(6, 182, 212, 0.25);
+    color: var(--accent-cyan);
+    box-shadow: inset 0 0 10px rgba(6, 182, 212, 0.05);
+}
+
+.arrow-btn.btn-cyan:active {
+    background: rgba(6, 182, 212, 0.2) !important;
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.4) !important;
+    transform: scale(0.93);
+}
+
+.arrow-btn.btn-green {
+    border-color: rgba(16, 185, 129, 0.25);
+    color: #10b981;
+    box-shadow: inset 0 0 10px rgba(16, 185, 129, 0.05);
+}
+
+.arrow-btn.btn-green:active {
+    background: rgba(16, 185, 129, 0.2) !important;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.4) !important;
+    transform: scale(0.93);
+}
+
+.arrow-btn.btn-magenta {
+    border-color: rgba(236, 72, 153, 0.25);
+    color: var(--accent-magenta);
+    box-shadow: inset 0 0 10px rgba(236, 72, 153, 0.05);
+}
+
+.arrow-btn.btn-magenta:active {
+    background: rgba(236, 72, 153, 0.2) !important;
+    box-shadow: 0 0 15px rgba(236, 72, 153, 0.4) !important;
+    transform: scale(0.93);
+}
+
+.arrow-btn.btn-gold {
+    border-color: rgba(234, 179, 8, 0.25);
+    color: var(--accent-gold);
+    box-shadow: inset 0 0 10px rgba(234, 179, 8, 0.05);
+}
+
+.arrow-btn.btn-gold:active {
+    background: rgba(234, 179, 8, 0.2) !important;
+    box-shadow: 0 0 15px rgba(234, 179, 8, 0.4) !important;
+    transform: scale(0.93);
+}
+
+/* ==========================================================================
+   5. Arrow Out Puzzle Game Arena Styling
+   ========================================================================== */
+
+.puzzle-icon {
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+    color: #10b981;
+    text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+}
+
+#arrow-out-arena .canvas-wrapper {
+    max-width: calc((100dvh - 220px) * 9 / 14);
+}
+
+#out-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    cursor: pointer;
+}
+
+.out-stats-container {
+    max-width: 360px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+/* ==========================================================================
+   6. Neon Block Fit Game Arena Styling
+   ========================================================================== */
+
+.block-icon {
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+    color: var(--accent-purple);
+    text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+}
+
+#block-fit-arena .canvas-wrapper {
+    max-width: calc((100dvh - 220px) * 9 / 14);
+}
+
+#blockfit-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    cursor: pointer;
+}
+
 
 
